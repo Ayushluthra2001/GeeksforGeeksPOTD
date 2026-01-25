@@ -1,0 +1,63 @@
+class Solution {
+  public:
+  
+  void solve(vector<string>&temp, int n, string curr){
+      
+      if(curr.length()==n){
+          temp.push_back(curr);
+          return;
+      }
+      
+      solve(temp,n,curr+"(");
+      solve(temp,n, curr+")");
+    //   solve(temp,n,curr+")");
+    //   solve(temp,n,curr+"(");
+      
+  }
+    bool valid(string temp){
+        if(temp.length()==1) return false;
+        
+        stack<char>st;
+        
+        int i = 0;
+        while(i < temp.length()){
+            if(st.empty() && temp[i]=='('){
+                st.push(temp[i]);
+                
+            }
+            else if(st.empty() && temp[i]==')') return false;
+            else{
+                if(temp[i]==')'){
+                    if(st.empty()) return false;
+                    st.pop();
+                }else if(temp[i]=='(') st.push(temp[i]);
+            }
+            i++;
+        }
+        if(st.empty()) {
+            // cout<<temp<<endl;
+            return true;
+            
+        }
+        return false;
+    }
+    int findWays(int n) {
+        if(n%2!=0) return 0;
+        // code here
+        int counter = 0;
+        vector<string>parentheses;
+        
+        solve(parentheses,n,"");
+        
+        // for(auto i : parentheses){
+        //     cout<<i<<endl;
+        // }
+        // cout<<endl;
+        
+        
+        for(auto i : parentheses){
+            if(valid(i)) counter++;
+        }
+        return counter;
+    }
+};
